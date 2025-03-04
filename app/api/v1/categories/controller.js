@@ -1,12 +1,11 @@
-const Categories = require('./model');
-const mongoose = require('mongoose');
-const { getAllCategories } = require('../../../services/mongoose/categories')
+const { StatusCodes } = require('http-status-codes');
+const { getAllCategories, createCategories, getOneCategories, updateCategories, deleteCategories } = require('../../../services/mongoose/categories')
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
     try {
-        const { name } = req.body;
-        const result = await Categories.create({ name });
-        res.status(200).json({
+        const result = await createCategories(req);
+
+        res.status(StatusCodes.CREATED).json({
             data: result
         });
     } catch (err) {
@@ -18,7 +17,7 @@ const index = async (req, res, next) => {
     try {
         const result = await getAllCategories();
 
-        res.status(200).json({
+        res.status(StatusCodes.OK).json({
             status: 'OK',
             message: 'SUkses',
             data: result
@@ -30,19 +29,9 @@ const index = async (req, res, next) => {
 
 const find = async (req, res, next) => {
     try {
-        const { id } = req.params;
+        const result = await getOneCategories(req);
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid ID format' });
-        }
-
-        const result = await Categories.findOne({ _id: id });
-
-        if (!result) {
-            return res.status(404).json({ message: 'Data not found' });
-        }
-
-        res.status(200).json({
+        res.status(StatusCodes.OK).json({
             status: 'OK',
             message: 'Success',
             data: result
@@ -54,22 +43,10 @@ const find = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const { name } = req.body;
+       const result = await updateCategories(req);
 
-        const result = await Categories.findById(id);
-        if (!result) {
-            return res.status(404).json({ message: 'Data not found' });
-        }
-
-        const response = await Categories.findOneAndUpdate(
-            { _id: id },
-            { name: name },
-            { new: true, runValidators: true }
-        );
-
-        res.status(200).json({
-            data: response,
+        res.status(StatusCodes.OK).json({
+            data: result,
         });
 
     } catch (err) {
@@ -77,10 +54,10 @@ const update = async (req, res, next) => {
     }
 }
 
-const deestroy = async (req, res, next) => {
+const destroy = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const result = await Categories.findByIdAndDelete(id);
+
+        await deleteCategories(req);
 
         res.status(204).json({
             data: []
@@ -95,5 +72,5 @@ module.exports = {
     find,
     create,
     update,
-    deestroy
+    destroy
 }
