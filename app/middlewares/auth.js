@@ -17,8 +17,8 @@ const authenticateUser = async (req, res, next) => {
         }
 
         const payload = isTokenValid({ token });
-        console.log(payload);
-
+        console.log('payload')
+        console.log(payload)
         // attack the user and his permissions to the req object
         req.user = {
             email: payload.email,

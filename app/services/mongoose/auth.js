@@ -21,6 +21,7 @@ const signinAuth = async (req) => {
     }
 
     const token = createJWT({ payload: createTokenUser(result) });
+    console.log('test sigin');
 
     return token;
 }

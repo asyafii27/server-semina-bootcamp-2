@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const { BadRequestError, NotFoundError } = require('../../errors');
 
 const getAllCategories = async (req) => {
-    const result = await Categories.find({ organizer: req.user.organizer });
+    console.log('test');
+    const result = await Categories.find({ organizer: req.user.organizer }).populate('organizer');
+
 
     return result;
 }

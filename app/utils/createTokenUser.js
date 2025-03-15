@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const createTokenUser = (user) => {
     return {
         name: user.name,
@@ -5,6 +7,10 @@ const createTokenUser = (user) => {
         role: user.role,
         email: user.email,
         organizer: user.organizer
+        // organizer: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'Organizer' // Referensi ke koleksi Organizers
+        // }
 
     };
 };

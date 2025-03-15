@@ -26,7 +26,8 @@ let userSchema = Schema(
             default: 'admin',
         },
         organizer: {
-            type: String,
+            // type: String,
+            type: mongoose.Schema.Types.ObjectId,  // ✅ Ubah ke ObjectId
             required: [true, 'Penyelenggara harus diiisi'],
             ref: 'Organizer',
         },
